@@ -33,6 +33,7 @@ type Result struct {
 
 	//Others
 	OpenLowHigh []Instrument `json:"OpenLowHigh"`
+	TimePeriod  string       `json:"TimePeriod"`
 }
 
 //OHLC is the open, high, low and close price for an instrument.
