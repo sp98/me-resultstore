@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/render"
@@ -45,6 +46,7 @@ func StoreOHLCResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	db := store.NewDB(DBUrl, DBName, fmt.Sprintf("ohlc-%s", interval))
+	result.TimePeriod = time.Now().Format("Mon 2006-01-02 3:4:5 PM")
 	err = db.InsertOHLCResult(&result)
 	if err != nil {
 		log.Printf("error getting the last ohlc result. %+v", err)
@@ -60,9 +62,10 @@ func GetOHLCResults(w http.ResponseWriter, r *http.Request) {
 		log.Printf("error getting the last ohlc result. %+v", err)
 
 	}
-
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3002")
+	//w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	w.Header().Set("Access-Control-Allow-Headers", "Accept, Accept-Language, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 	render.JSON(w, r, result) // A chi router helper for serializing and returning json
 }
