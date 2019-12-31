@@ -33,7 +33,16 @@ type Result struct {
 
 	//Others
 	OpenLowHigh []Instrument `json:"OpenLowHigh"`
-	TimePeriod  string       `json:"TimePeriod"`
+
+	//Other chart types
+	BullishMarubuzo []Instrument `json:"BullishMarubuzo"`
+	BearishMarubuzo []Instrument `json:"BearishMarubuzo"`
+	Dozi            []Instrument `json:"Dozi"`
+	Hammer          []Instrument `json:"Hammer"`
+	ShootingStar    []Instrument `json:"ShootingStar"`
+
+	//TimePeriod
+	TimePeriod string `json:"TimePeriod"`
 }
 
 //OHLC is the open, high, low and close price for an instrument.
