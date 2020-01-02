@@ -46,7 +46,7 @@ func StoreOHLCResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	db := store.NewDB(DBUrl, DBName, fmt.Sprintf("ohlc-%s", interval))
-	result.TimePeriod = time.Now().Format("Mon 2006-01-02 3:4:5 PM")
+	result.TimePeriod = time.Now().Format("Mon 2006-01-02 03:04:05 PM")
 	err = db.InsertOHLCResult(&result)
 	if err != nil {
 		log.Printf("error getting the last ohlc result. %+v", err)
