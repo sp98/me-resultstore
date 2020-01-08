@@ -46,7 +46,8 @@ func StoreOHLCResult(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	db := store.NewDB(DBUrl, DBName, fmt.Sprintf("ohlc-%s", interval))
-	result.TimePeriod = time.Now().Format("Mon 2006-01-02 03:04:05 PM")
+	loc, _ := time.LoadLocation("Asia/Kolkata")
+	result.TimePeriod = time.Now().In(loc).Format("Mon 2006-01-02 03:04:05 PM")
 	err = db.InsertOHLCResult(&result)
 	if err != nil {
 		log.Printf("error getting the last ohlc result. %+v", err)
@@ -62,10 +63,9 @@ func GetOHLCResults(w http.ResponseWriter, r *http.Request) {
 		log.Printf("error getting the last ohlc result. %+v", err)
 
 	}
-	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3002")
-	//w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Credentials", "true")
+	w.Header().Set("Access-Control-Allow-Origin", "https://marketmoz.com")
+	//w.Header().Set("Access-Control-Allow-Credentials", "true")
 	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	w.Header().Set("Access-Control-Allow-Headers", "Accept, Accept-Language, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+	w.Header().Set("Access-Control-Allow-Headers", "Authorization, Accept, Accept-Language, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token")
 	render.JSON(w, r, result) // A chi router helper for serializing and returning json
 }
